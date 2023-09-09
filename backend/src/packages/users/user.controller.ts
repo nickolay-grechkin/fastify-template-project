@@ -1,8 +1,9 @@
 import { ApiPath } from '~/libs/enums/enums.js';
 import {
+  type ApiHandlerOptions,
   type ApiHandlerResponse,
-  Controller,
 } from '~/libs/packages/controller/controller.js';
+import { Controller } from '~/libs/packages/controller/controller.js';
 import { HttpCode } from '~/libs/packages/http/http.js';
 import { type ILogger } from '~/libs/packages/logger/logger.js';
 import { type UserService } from '~/packages/users/user.service.js';
@@ -37,6 +38,12 @@ class UserController extends Controller {
       method: 'GET',
       handler: () => this.findAll(),
     });
+
+    this.addRoute({
+      path: `${UsersApiPath.ROOT}`,
+      method: 'GET',
+      handler: (options) => this.findById(options),
+    });
   }
 
   /**
@@ -58,6 +65,17 @@ class UserController extends Controller {
     return {
       status: HttpCode.OK,
       payload: await this.userService.findAll(),
+    };
+  }
+
+  private async findById(
+    options: ApiHandlerOptions,
+  ): Promise<ApiHandlerResponse> {
+    console.log(options);
+
+    return {
+      status: HttpCode.OK,
+      payload: await this.userService.find(),
     };
   }
 }

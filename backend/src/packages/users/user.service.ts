@@ -1,12 +1,13 @@
-import { type IService } from '~/libs/interfaces/interfaces.js';
-import { UserEntity } from '~/packages/users/user.entity.js';
-import { type UserRepository } from '~/packages/users/user.repository.js';
-
 import {
   type UserGetAllResponseDto,
   type UserSignUpRequestDto,
   type UserSignUpResponseDto,
-} from './libs/types/types.js';
+} from 'shared/build';
+
+import { type IService } from '~/libs/interfaces/interfaces.js';
+import { NotFoundError } from '~/libs/packages/exceptions/exceptions.js';
+import { UserEntity } from '~/packages/users/user.entity.js';
+import { type UserRepository } from '~/packages/users/user.repository.js';
 
 class UserService implements IService {
   private userRepository: UserRepository;
@@ -16,6 +17,8 @@ class UserService implements IService {
   }
 
   public find(): ReturnType<IService['find']> {
+    throw new NotFoundError('User not found');
+
     return Promise.resolve(null);
   }
 
